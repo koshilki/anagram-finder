@@ -1,4 +1,4 @@
-# Match finder
+# Anagram finder
 
 Module finds "shifted anagrams" (where letters maintain order but are shifted by number of positions) among given words.
 
