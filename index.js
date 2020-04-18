@@ -1,5 +1,5 @@
 const fs = require("fs");
-const processList = require("./src/processList.js");
+const groupWords = require("./src/groupWords.js");
 const list1 = fs
   .readFileSync("test/data/list1.txt", { encoding: "utf8" })
   .split("\n");
@@ -8,7 +8,7 @@ const list2 = fs
   .split("\n");
 
 console.log("List 1");
-processList(list1).map((l) => console.log(l.join(", ")));
+groupWords(list1).map((l) => console.log(l.join(", ")));
 
 console.log("List 2");
-processList(list2).map((l) => console.log(l.join(", ")));
+groupWords(list2).map((l) => console.log(l.join(", ")));
