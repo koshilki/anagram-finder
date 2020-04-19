@@ -2,6 +2,12 @@ const rotate = (str, shift) => {
   return `${str.slice(shift)}${str.slice(0, shift)}`;
 };
 
+function* getAnagrams(word) {
+  for (let count = 1; count < word.length; count++) {
+    yield rotate(word, count);
+  }
+}
+
 function groupWords(input) {
   let words = [...new Set(input)]; // remove duplicates
   const anagrams = {};
@@ -9,41 +15,30 @@ function groupWords(input) {
 
   while (words.length) {
     const current = words.shift();
+    const currentLC = current.toLowerCase();
 
-    const group = [];
-    const matches = [];
-
-    group.push(current);
+    const group = [current];
     groups.push(group);
 
-    for (const [idx, word] of words.entries()) {
-      if (anagrams[word]) {
-        // find among memoized anagrams
-        if (anagrams[word][current.toLowerCase()]) {
-          group.push(word);
-          matches.push(idx);
-        }
-      } else {
-        // calculate possible anagrams of the word
+    for (const word of words) {
+      const wordLC = word.toLowerCase();
+      // find among memoized anagrams
+      if (anagrams[word] && anagrams[word][currentLC]) {
+        group.push(word);
+      } else if (!anagrams[word]) {
         anagrams[word] = {};
-        let found = false;
-        for (let i = 1; i < word.length && !found; i++) {
-          const anagram = rotate(word.toLowerCase(), i);
-          if (current.toLowerCase() === anagram) {
-            // word matches current group
+        for (const anagram of getAnagrams(wordLC)) {
+          anagrams[word][anagram] = true;
+          if (anagram === currentLC) {
             group.push(word);
-            matches.push(idx);
-            found = true;
-          } else {
-            // memoize anagram for future search
-            anagrams[word][anagram] = true;
+            break;
           }
         }
       }
     }
 
     // remove matches from initial array
-    words = words.filter((_, idx) => matches.indexOf(idx) === -1);
+    words = words.filter((word) => group.indexOf(word) < 0);
     // on a larger data set it would probably make sense to
     // implement insertion at index rather than sorting,
     // but for the purpose of this test the overhead is too big
