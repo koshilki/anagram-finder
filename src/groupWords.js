@@ -2,7 +2,7 @@ const rotate = (str, shift) => {
   return `${str.slice(shift)}${str.slice(0, shift)}`;
 };
 
-function processList(input) {
+function groupWords(input) {
   let words = [...new Set(input)]; // remove duplicates
   const anagrams = {};
   const groups = [];
@@ -53,4 +53,4 @@ function processList(input) {
   return groups.sort();
 }
 
-module.exports = processList;
+module.exports = groupWords;
