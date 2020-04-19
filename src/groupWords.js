@@ -1,6 +1,6 @@
-const rotate = (str, shift) => {
+function rotate(str, shift) {
   return `${str.slice(shift)}${str.slice(0, shift)}`;
-};
+}
 
 function* getAnagrams(word) {
   for (let count = 1; count < word.length; count++) {
